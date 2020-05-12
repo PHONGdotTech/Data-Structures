@@ -44,8 +44,9 @@ class LinkedList:
         # what if the list isn't empty?
         else:
             # what node do we want to remove the last node from? 
-            # the last node in the list 
+            # the last node in the list. keep track with current
             current = self.head
+            # use previous to keep track of 2nd to last
             previous = current
             # if the head does not have a next node, it is the only node, so remove it
             if current.get_next() is None:
@@ -53,11 +54,14 @@ class LinkedList:
             else:
                 # traverse the list to get the last and next to last element
                 while current.get_next() is not None:
+                    # before assigning next to current, assign current to previous
                     previous = current
                     current = current.get_next()
                 # we're at the end of the linked list
                 # set the previous's next node to none to remove the current from list
                 previous.set_next(None)
+            # return current.value to be printed
+            # current.value is head if the only node, else it is last node
             return current.value
 
     def remove_from_head(self):
