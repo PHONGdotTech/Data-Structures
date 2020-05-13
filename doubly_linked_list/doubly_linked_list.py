@@ -66,7 +66,10 @@ class DoublyLinkedList:
         if current_head and current_head.next:
             current_head.next.prev = None
             self.head = current_head.next
-            return current_head.value
+        else:
+            self.head = None
+            self.tail = None
+        return current_head.value
 
     """Wraps the given value in a ListNode and inserts it 
     as the new tail of the list. Don't forget to handle 
@@ -89,14 +92,19 @@ class DoublyLinkedList:
         if current_tail and current_tail.prev:
             current_tail.prev.next = None
             self.tail = current_tail.prev
-            return current_tail.value
+        else:
+            self.tail = None
+            self.head = None
+        return current_tail.value
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new head node of the List."""
     def move_to_front(self, node):
         current_node = node
         current_head = self.head
-        if current_node and current_head and current_node != current_head and current_node != self.tail:
+        if current_node and current_head and self.tail:
+            if current_node == self.tail:
+                self.tail = self.tail.prev
             # remove from dll by pointing current node's prev and next to eachother
             if current_node.next:
                 current_node.next.prev = current_node.prev
@@ -114,7 +122,9 @@ class DoublyLinkedList:
     def move_to_end(self, node):
         current_node = node
         current_tail = self.tail
-        if current_node and current_tail:
+        if current_node and current_tail and self.head:
+            if current_node == self.head:
+                self.head = self.head.next
             # remove from dll by pointing current node's prev and next to eachother
             if current_node.next:
                 current_node.next.prev = current_node.prev
@@ -132,20 +142,15 @@ class DoublyLinkedList:
     def delete(self, node):
         current_node = node
         if current_node:
-            print("this ran")
             if (current_node != self.head or current_node != self.tail) and current_node.next and current_node.prev:
-                print("delete not ran")
                 self.length -= 1
                 current_node.next.prev = current_node.prev
                 current_node.prev.next = current_node.next
             elif current_node == self.head and current_node != self.tail:
-                print("delete head ran")
                 self.remove_from_head()
             elif current_node == self.tail and current_node != self.head:
-                print("delete tail ran")
                 self.remove_from_tail()
             elif current_node == self.head and current_node == self.tail:
-                print("delete only one ran")
                 self.length = 0
                 self.tail = None
                 self.head = None
@@ -159,17 +164,4 @@ class DoublyLinkedList:
             if current.value > highest_value:
                 highest_value = current.value
         return highest_value
-
-dll = DoublyLinkedList()
-dll.add_to_tail(1)
-dll.add_to_head(9)
-dll.add_to_tail(6)
-print(f"check this {dll.head.value}")
-print(f"check this {dll.head.next.value}")
-print(f"check this {dll.tail.value}")
-dll.remove_from_head()
-
-print(f"check this {dll.head.value}")
-
-# print(ListNode(1, None, 3).next)
 
